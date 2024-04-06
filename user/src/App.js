@@ -13,6 +13,7 @@ import StudentRegistration from './components/StudentRegistration';
 
 function App() {
 
+  
   return (
     <div>
       <header>
