@@ -1,0 +1,197 @@
+.safe-doc-decentralized-certification-dashboard {
+    background-color: black;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  body{
+    margin:0%;
+  }
+  .text-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .decentralized-text {
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .certification-text {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .register-button,
+  .connect-button {
+    margin: 0 1rem;
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .register-button:hover,
+  .connect-button:hover {
+    background-color: #f0f0f0;
+  }
+
+  /*home navbar css  */
+  .navigation-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .logo-text {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    font-style:oblique;
+  }
+  
+  .ingrid-darling-text {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .connect-button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .connect-button {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .connect-button:hover {
+    background-color: #2e408b;
+  }
+  .grey-line {
+    width: 100%;
+    background-color: #8e8d8d;
+    margin-top: 0.04rem;
+  }
+
+  /* User Registration form  */
+  .user-registration-form-container {
+    background-color: black; /* Set background color to black */
+    color: white; /* Set text color to white */
+    padding: 20px;
+    height: 90vh;
+    /* width:100%; */
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header-text {
+    font-size: 24px;
+  }
+  .form{
+    width:280px;
+  }
+  .h1_in_reg{
+    margin-left: 5%;
+  }
+  .form-container {
+    /* background-color: white;  */
+    padding: 20px;
+    
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  }
+
+ 
+
+
+  .input-container {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: auto;
+  }
+  
+  .label {
+    font-size: 18px;
+  }
+  
+  input[type='text'],
+  input[type='tel'],
+  input[type='email'] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9; /* Set input field background color to light grey */
+  }
+  
+  input[type='text']:focus,
+  input[type='tel']:focus,
+  input[type='email']:focus {
+    outline: none;
+    border-color: #007bff; /* Change border color on focus */
+  }
+  
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .connect-button {
+    background-color: #007bff; /* Blue color for Connect button */
+    color: white;
+  }
+  
+  .register-button {
+    background-color: #007bff; /* Green color for Register button */
+    color: white;
+  }
+  
+  .button-container {
+    text-align: center;
+  }
+  
