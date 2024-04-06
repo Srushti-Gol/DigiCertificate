@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import TokenMaster from '../abis/TokenMaster.json'; // Replace 'YourContractABI.json' with your actual ABI file path
 import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
 
@@ -63,7 +63,7 @@ export default function Home() {
       console.error('Error fetching organizations:', error);
     }
   };
- 
+
   useEffect(() => {
     if (account) {
       fetchOrganizations();
@@ -72,25 +72,25 @@ export default function Home() {
 
   return (
     <>
-    <div>
-      {account ? (
+      <div>
+        {account ? (
           <button type="button" className='nav__connect'>
-          {account.slice(0, 6) + '...' + account.slice(38, 42)}
-        </button>
-      ) : (
+            {account.slice(0, 6) + '...' + account.slice(38, 42)}
+          </button>
+        ) : (
           <button type="button" className='nav__connect' onClick={connectHandler}>
-          Connect
-        </button>
-      )}
-    </div>
-    <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+            Connect
+          </button>
+        )}
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div className="border-solid border-5 border-blue-700">
         <div className="flex flex-col gap-4">
           <div>
@@ -121,8 +121,8 @@ export default function Home() {
         </div>
       </div>
 
-{/* Display organizations */}
-<div>
+      {/* Display organizations */}
+      <div>
         <h2>Registered Organizations:</h2>
         <ul>
           {organizations.map((org, index) => (
@@ -132,6 +132,6 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      </>
+    </>
   );
 }
