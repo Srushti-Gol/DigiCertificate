@@ -213,7 +213,7 @@ const ConsumerHomePage = () => {
                         </DialogActions>
                     </BootstrapDialog>
                     <Link to="/request"><button className="connect-button" >Request</button></Link>
-                    <button className="connect-button">Document</button>
+                    <Link to="/doc"><button className="connect-button">Document</button></Link>
                 </div>
                 {studentDetails &&
                     <div style={{color:"white"}}>

@@ -100,7 +100,7 @@ const ConsumerRequestPage = () => {
             <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="input-container">
-            <label htmlFor="mobile">Mobile:</label>
+            <label htmlFor="mobile">Description:</label>
             <input type="tel" id="mobile" value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
           <div className="button-container">

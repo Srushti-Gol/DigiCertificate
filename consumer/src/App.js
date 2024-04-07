@@ -8,6 +8,7 @@ import {
   Link,
 } from "react-router-dom";
 import ConsumerRequestPage from './components/ConsumerRequestPage';
+import Documents from './components/Documents';
 
 
 function App() {
@@ -20,7 +21,11 @@ function App() {
     {
       path:"/request",
       element: <ConsumerRequestPage />
-    }]);
+    },{
+      path:"/doc",
+      element: <Documents />
+    }
+  ]);
 
   return (
     <div className="App">

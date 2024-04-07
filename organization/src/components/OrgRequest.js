@@ -12,7 +12,7 @@ import FormData from 'form-data';
 const OrgRequest = () => {
     const [requestsList, setRequestsList] = useState([]);
     const [account, setAccount] = useState(null);
-    const [selectedRequest, setSelectedRequest] = useState(requestsList[0]); // State to track the selected request
+    const [selectedRequest, setSelectedRequest] = useState(null); // State to track the selected request
     const [comment, setComment] = useState('');
     const [selectedFile, setSelectedFile] = useState();
     const [uuid, setUuid] = useState(uuidv4());
