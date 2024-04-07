@@ -22,8 +22,8 @@ const OrgRequest = () => {
     let pdfBytes;
 
     useEffect(() => {
-        getReqList();
         connectHandler();
+        getReqList();
     }, []); // Empty dependency array ensures this effect runs only once when component mounts
 
     const getReqList = async () => {
@@ -80,29 +80,31 @@ const OrgRequest = () => {
         console.log(selectedFile);
         // const buffer = await selectedFile.arrayBuffer();
         let existingPdfBytes = await selectedFile.arrayBuffer();
-
+        console.log(existingPdfBytes);
+        const pdfBytes = new Uint8Array(existingPdfBytes);
         // Load a PDFDocument from the existing PDF bytes
-        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        // const pdfDoc = await PDFDocument.load(pdfBytes);
 
-        // Get the first page of the document
-        const pages = pdfDoc.getPages();
-        const firstPage = pages[0];
+        // console.log(pdfDoc);
+        // // Get the first page of the document
+        // const pages = pdfDoc.getPages();
+        // const firstPage = pages[0];
 
-        // Get the width and height of the first page
-        const { width } = firstPage.getSize();
+        // // Get the width and height of the first page
+        // const { width } = firstPage.getSize();
 
-        const jpgImage = await pdfDoc.embedJpg(imgData);
+        // const jpgImage = await pdfDoc.embedJpg(imgData);
 
-        const jpgDims = jpgImage.scale(0.5);
+        // const jpgDims = jpgImage.scale(0.5);
 
-        firstPage.drawImage(jpgImage, {
-            x: width - jpgDims.width,
-            width: jpgDims.width,
-            height: jpgDims.height,
-        });
+        // firstPage.drawImage(jpgImage, {
+        //     x: width - jpgDims.width,
+        //     width: jpgDims.width,
+        //     height: jpgDims.height,
+        // });
 
         // Serialize the PDFDocument to bytes (a Uint8Array)
-        pdfBytes = await pdfDoc.save();
+       // pdfBytes = await pdfDoc.save();
         download(pdfBytes, "verified.pdf", "application/pdf");
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const file = [new File([blob], "verified_doc.pdf")];
@@ -112,34 +114,67 @@ const OrgRequest = () => {
         await pinFileToIPFS(pdfFile);
     };
 
+    // const pinFileToIPFS = async (file) => {
+    //     const JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyNjcyYmRhZC0zMDhiLTQxMzItYWNlZS0yYjFiNGIzMzBlOGEiLCJlbWFpbCI6ImdvbHNydXNodGkxQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MmQwNjQzNTA3ODFlNjVlNTk1OSIsInNjb3BlZEtleVNlY3JldCI6IjkwYjE2ZTRmODZkOWVjNjJmM2IzMWI2Nzc5NDhiODUxMzljOTU5YzMzYjNhNTExMGQ2ZjgwMWMwNGMxYWM2ZDkiLCJpYXQiOjE3MTI0NDAxNDd9.vlU4osEfI7w-3mfQoypdwsm3I_gLiWug5Fj-mW2ue6Q";
+    //     const formData = new FormData();
+    //     formData.append('file', file);
+    
+    //     // const pinataMetadata = JSON.stringify({
+    //     //     name: 'verified_doc.pdf', // Specify the file name
+    //     // });
+    //     // formData.append('pinataMetadata', pinataMetadata);
+    
+    //     // const pinataOptions = JSON.stringify({
+    //     //     cidVersion: 0,
+    //     // });
+    //     // formData.append('pinataOptions', pinataOptions);
+    
+    //     try {
+    //         const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
+    //             headers: {
+    //                 'Content-Type': `multipart/form-data`,
+    //                 'Authorization': `Bearer ${JWT}`
+    //             }
+    //         });
+    //         console.log(res.data);
+    //     } catch (error) {
+    //         console.log(error.response.data); // Log the error response for debugging
+    //     }
+    // };
+
     const pinFileToIPFS = async (file) => {
-        const JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyNjcyYmRhZC0zMDhiLTQxMzItYWNlZS0yYjFiNGIzMzBlOGEiLCJlbWFpbCI6ImdvbHNydXNodGkxQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0MmQwNjQzNTA3ODFlNjVlNTk1OSIsInNjb3BlZEtleVNlY3JldCI6IjkwYjE2ZTRmODZkOWVjNjJmM2IzMWI2Nzc5NDhiODUxMzljOTU5YzMzYjNhNTExMGQ2ZjgwMWMwNGMxYWM2ZDkiLCJpYXQiOjE3MTI0NDAxNDd9.vlU4osEfI7w-3mfQoypdwsm3I_gLiWug5Fj-mW2ue6Q";
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const pinataMetadata = JSON.stringify({
-            name: 'verified_doc.pdf', // Specify the file name
-        });
-        formData.append('pinataMetadata', pinataMetadata);
-
-        const pinataOptions = JSON.stringify({
-            cidVersion: 0,
-        });
-        formData.append('pinataOptions', pinataOptions);
-
         try {
-            const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
-                maxBodyLength: "Infinity",
+            const formData = new FormData();
+            formData.append("file", file);
+            // const metadata = JSON.stringify({
+            //   name: "MarkSheet",
+            // });
+            // formData.append("pinataMetadata", metadata);
+      
+            // const options = JSON.stringify({
+            //   cidVersion: 0,
+            // });
+            // formData.append("pinataOptions", options);
+            const JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyNjcyYmRhZC0zMDhiLTQxMzItYWNlZS0yYjFiNGIzMzBlOGEiLCJlbWFpbCI6ImdvbHNydXNodGkxQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI2Y2UzNDAxNWNjOTk4NDk5ZWQ4OSIsInNjb3BlZEtleVNlY3JldCI6IjkwODEzZjU1MmQ4OTQ2NjBmODVhNjY0OGJlNjc4NzVmNDlhMjkxNThhOWE2MmE3YzZhMDVhMmY3MDA5NTNiNGQiLCJpYXQiOjE3MTI0NDcxNjZ9.00O4AOifg9uXb6mRsH13DHOb2GCyE5RmMfoiO7hVsU8';
+            const res = await axios({
+                method: "POST",
+                url : "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                data : formData,
                 headers: {
-                    'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-                    'Authorization': `Bearer ${JWT}`
-                }
-            });
-            console.log(res.data);
-        } catch (error) {
+                    pinata_api_key : '6ce34015cc998499ed89',
+                    pinata_secret_api_key : '90813f552d894660f85a6648be67875f49a29158a9a62a7c6a05a2f700953b4d',
+                    "Content-Type" : "multipart/form-data",
+                },
+                body: formData,
+              }
+            );
+            const resData = await res.json();
+            console.log(resData);
+          } catch (error) {
             console.log(error);
-        }
+          }
     };
+    
 
 
     const handleAcceptRequest = async () => {
@@ -234,12 +269,13 @@ const OrgRequest = () => {
                     <p>Comments: {selectedRequest.comments}</p>
                     <p>Student Address: {selectedRequest.studentAddress}</p>
                     <p>Description: {selectedRequest[5]}</p>
-                    <input type="file" onChange={handleFileUpload} />
+                    <input  type="file" onChange={handleFileUpload} />
                     <button onClick={handleUploadToIPFS}>Upload to IPFS</button>
                     <input type="text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Add comment" />
                     <button onClick={handleAcceptRequest}>Accept Request</button>
                     <button onClick={handleRejectRequest}>Reject Request</button>
                     <button onClick={handleViewPDF}>View PDF</button>
+                    <canvas id="canvas"></canvas>
                 </div>
             )}
         </div>
