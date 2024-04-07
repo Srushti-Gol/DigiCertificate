@@ -16,8 +16,9 @@ const OrgRequest = () => {
     const [comment, setComment] = useState('');
     const [selectedFile, setSelectedFile] = useState();
     const [uuid, setUuid] = useState(uuidv4());
-    // const [cid, setCid] = useState(null);
-    const [pdfFile, setPdfFile] = useState(null);
+    const [cid, setCid] = useState(null);
+    const [path,setPath] = useState(null);
+    // const [pdfFile, setPdfFile] = useState(null);
 
     let pdfBytes;
 
@@ -57,10 +58,10 @@ const OrgRequest = () => {
         }
     };
 
-    const handleViewDetails = (requestId) => {
+    const handleViewDetails = (nestedArray) => {
         // Find the selected request from requestsList based on the requestId
-        const selected = requestsList.find((request) => request[0] === requestId);
-        setSelectedRequest(selected);
+        // const selected = requestsList.find((request) => request[0] === requestId);
+        setSelectedRequest(nestedArray);
     };
 
     const handleFileUpload = async (e) => {
@@ -108,10 +109,10 @@ const OrgRequest = () => {
         download(pdfBytes, "verified.pdf", "application/pdf");
         const blob = new Blob([pdfBytes], { type: "application/pdf" });
         const file = [new File([blob], "verified_doc.pdf")];
-        setPdfFile(pdfFile);
+        // setPdfFile(pdfFile);
 
         // Upload PDF file to Pinata Cloud
-        await pinFileToIPFS(pdfFile);
+        await pinFileToIPFS(selectedFile);
     };
 
     // const pinFileToIPFS = async (file) => {
@@ -146,15 +147,15 @@ const OrgRequest = () => {
         try {
             const formData = new FormData();
             formData.append("file", file);
-            // const metadata = JSON.stringify({
-            //   name: "MarkSheet",
-            // });
-            // formData.append("pinataMetadata", metadata);
+            const metadata = JSON.stringify({
+              name: "MarkSheet",
+            });
+            formData.append("pinataMetadata", metadata);
       
-            // const options = JSON.stringify({
-            //   cidVersion: 0,
-            // });
-            // formData.append("pinataOptions", options);
+            const options = JSON.stringify({
+              cidVersion: 0,
+            });
+            formData.append("pinataOptions", options);
             const JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyNjcyYmRhZC0zMDhiLTQxMzItYWNlZS0yYjFiNGIzMzBlOGEiLCJlbWFpbCI6ImdvbHNydXNodGkxQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImlkIjoiRlJBMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfSx7ImlkIjoiTllDMSIsImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxfV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI2Y2UzNDAxNWNjOTk4NDk5ZWQ4OSIsInNjb3BlZEtleVNlY3JldCI6IjkwODEzZjU1MmQ4OTQ2NjBmODVhNjY0OGJlNjc4NzVmNDlhMjkxNThhOWE2MmE3YzZhMDVhMmY3MDA5NTNiNGQiLCJpYXQiOjE3MTI0NDcxNjZ9.00O4AOifg9uXb6mRsH13DHOb2GCyE5RmMfoiO7hVsU8';
             const res = await axios({
                 method: "POST",
@@ -168,8 +169,14 @@ const OrgRequest = () => {
                 body: formData,
               }
             );
-            const resData = await res.json();
-            console.log(resData);
+            console.log(res);
+            const  IpfsHash  = res.data.IpfsHash;
+        const pathToFile = `https://gateway.pinata.cloud/ipfs/${IpfsHash}`;
+
+        console.log('CID:', IpfsHash);
+        console.log('Path to file:', pathToFile);
+          setCid(IpfsHash);
+          setPath(pathToFile)
           } catch (error) {
             console.log(error);
           }
@@ -186,11 +193,15 @@ const OrgRequest = () => {
         const contract = new ethers.Contract(contractAddress, contractABI, signer);
         const today = new Date();
         const timeNow = Math.floor(today.getTime() / 1000);
+        console.log(selectedRequest);
+        console.log(selectedRequest.requestId);
+        console.log(selectedRequest.cid);
+        console.log(selectedRequest.uuid);
         const newReqList = await contract.updateStatus(
             selectedRequest.requestId,
-            selectedRequest.cid,
+            cid,
             2,
-            selectedRequest.uuid,
+            uuid,
             timeNow,
             comment
         );
@@ -224,9 +235,14 @@ const OrgRequest = () => {
     };
 
     const handleViewPDF = () => {
-        // Add logic to handle viewing the PDF (if applicable)
+        if (selectedFile) {
+            const fileURL = path;
+            window.open(fileURL);
+        } else {
+            console.log('No file selected');
+        }
     };
-
+    
     return (
         <div className="mac-form">
             <table>
@@ -250,7 +266,7 @@ const OrgRequest = () => {
                             <td className="data-cell">{nestedArray[5]}</td>
                             <td className="data-cell">{nestedArray[10]}</td>
                             <td className="data-cell">{nestedArray[9].toString()}</td>
-                            <td className="data-cell" onClick={() => handleViewDetails(nestedArray[0])}>
+                            <td className="data-cell" onClick={() => handleViewDetails(nestedArray)}>
                                 View
                             </td>
                         </tr>
